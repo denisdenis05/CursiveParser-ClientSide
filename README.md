@@ -30,10 +30,13 @@ The mobile app establishes a connection to the server in order to process the im
 A project consisting of 3 parts: a client application and two server ones. 
 
 ## Links:
-<br>
+<br><br>
 [![Pic](https://imgur.com/RDkIOuU.png)](https://github.com/LucianuSebi/CursiveParser-ServerSide)
+<br><br>
 [![Pic](https://imgur.com/2vKNQCr.png)](https://github.com/LucianuSebi/CursiveParser-WebConnection)
+<br><br>
 [![Pic](https://imgur.com/7rEwc2X.png)](https://github.com/denisdenis05/CursiveParser-ClientSide)
+<br><br>
 
 <br><br>
 

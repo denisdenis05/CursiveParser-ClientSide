@@ -93,7 +93,7 @@ public class command : MonoBehaviour
             var modes = new Dictionary<Renci.SshNet.Common.TerminalModes, uint>();
             SshClient ssh = new SshClient(camerascript.serverip, "root", password);
             ssh.Connect();
-            var cmd = ssh.RunCommand("echo -e \'" + password + "\n\' | rm -r /var/www/html/cache/*");
+            var cmd = ssh.RunCommand("echo -e \'" + password + "\n\' | rm -r "+ camerascript.locatiefolder + "cache/*");
             resultat = cmd.Result.ToString();
             GameObject.Find("ConnectionResultText").GetComponent<Text>().text = resultat;
         }

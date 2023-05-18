@@ -16,7 +16,7 @@ public class cam : MonoBehaviour
     GameObject Checkboxes;
     GameObject imagineNeagra;
 
-    public string username="necompletat", userparola="necompletat", serverip="necompletat";
+    public string username="necompletat", userparola="necompletat", serverip="necompletat", locatiefolder = "necompletat";
 
 
     void Start()
@@ -38,7 +38,7 @@ public class cam : MonoBehaviour
         CamTex = webCamDevices;
         webCamDevices.Play();
 
-        if (File.Exists(Application.persistentDataPath + "/user.ip"))
+        if (File.Exists(Application.persistentDataPath + "/user.locatie"))
         {
             byte[] name = File.ReadAllBytes(Application.persistentDataPath + "/user.name");
             string numetemp = System.Text.Encoding.ASCII.GetString(name);
@@ -46,12 +46,15 @@ public class cam : MonoBehaviour
             string passtemp = System.Text.Encoding.ASCII.GetString(pass);
             byte[] ip = File.ReadAllBytes(Application.persistentDataPath + "/user.ip");
             string iptemp = System.Text.Encoding.ASCII.GetString(ip);
+            byte[] locatie = File.ReadAllBytes(Application.persistentDataPath + "/user.locatie");
+            string locatietemp = System.Text.Encoding.ASCII.GetString(locatie);
             Debug.Log(iptemp);
-            if (numetemp != null && passtemp != null && iptemp != null)
+            if (numetemp != null && passtemp != null && iptemp != null && locatietemp!=null)
             {
                 username = numetemp;
                 userparola = passtemp;
                 serverip = iptemp;
+                locatiefolder = locatietemp;
                 GameObject.Find("Canvas").GetComponent<adminpanel>().switchmodes(1);
             }
         }
@@ -82,18 +85,23 @@ public class cam : MonoBehaviour
 
     public void LogInAsAdmin()
     {
-        username = GameObject.Find("Admin-UsernameText").GetComponent<Text>().text;
-        userparola= GameObject.Find("Admin-PasswordText").GetComponent<Text>().text;
-        serverip = GameObject.Find("Admin-IPText").GetComponent<Text>().text;
+        username = GameObject.Find("Admin-Username").GetComponent<InputField>().text;
+        userparola= GameObject.Find("Admin-Password").GetComponent<InputField>().text;
+        serverip = GameObject.Find("Admin-IP").GetComponent<InputField>().text;
+        locatiefolder = GameObject.Find("Admin-Location").GetComponent<InputField>().text;
+        if(!(locatiefolder.EndsWith("/")))
+                locatiefolder = locatiefolder + "/";
 
         byte[] user = Encoding.ASCII.GetBytes(username);
         byte[] pass = Encoding.ASCII.GetBytes(userparola);
         byte[] ip = Encoding.ASCII.GetBytes(serverip);
+        byte[] locatie = Encoding.ASCII.GetBytes(locatiefolder);
         if (File.Exists(Application.persistentDataPath + "/user.name"))
         {
             File.Delete(Application.persistentDataPath + "/user.name");
             File.Delete(Application.persistentDataPath + "/user.pass");
             File.Delete(Application.persistentDataPath + "/user.ip");
+            File.Delete(Application.persistentDataPath + "/user.locatie");
         }
         using var writer = new BinaryWriter(File.OpenWrite(Application.persistentDataPath + "/user.name"));
         writer.Write(user);
@@ -101,6 +109,8 @@ public class cam : MonoBehaviour
         writer2.Write(pass);
         using var writer3 = new BinaryWriter(File.OpenWrite(Application.persistentDataPath + "/user.ip"));
         writer3.Write(ip);
+        using var writer4 = new BinaryWriter(File.OpenWrite(Application.persistentDataPath + "/user.locatie"));
+        writer4.Write(locatie);
         GameObject.Find("Canvas").GetComponent<adminpanel>().switchmodes(1);
     }
 
@@ -109,10 +119,12 @@ public class cam : MonoBehaviour
         File.Delete(Application.persistentDataPath + "/user.name");
         File.Delete(Application.persistentDataPath + "/user.pass");
         File.Delete(Application.persistentDataPath + "/user.ip");
+        File.Delete(Application.persistentDataPath + "/user.locatie");
         GameObject.Find("Canvas").GetComponent<adminpanel>().switchmodes(0);
         username = "necompletat";
         userparola = "necompletat";
         serverip = "necompletat";
+        locatiefolder = "necompletat";
     }
 
     public void SendImage()

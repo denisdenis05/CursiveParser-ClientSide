@@ -96,7 +96,8 @@ public class sftp : MonoBehaviour
         
 
         print(dest);
-        string destination = "/var/www/html/Poze/" + dest;
+        //string destination = "/var/www/html/Poze/" + dest;
+        string destination = camerascript.locatiefolder + "cache/" + dest;
         var values = new Dictionary<string, string>
             {
                 { "upload", "upload" },
@@ -127,6 +128,9 @@ public class sftp : MonoBehaviour
                     sftp.Connect();
                     sftp.ChangeDirectory("/");
                     Stream localFile = File.OpenRead(source);
+
+                    Debug.Log(destination);
+                    
                     sftp.UploadFile(localFile, destination, true);
                     localFile.Close();
                     File.Delete(source);
@@ -210,7 +214,7 @@ public class sftp : MonoBehaviour
     public async void req()
     {
         print("test");
-        string destination = "/var/www/NeuralNetwork/cache/" + dest;
+        string destination = camerascript.locatiefolder + "cache/" + dest;
         print("test");
         var promptRegex = new Regex(@"\][#$>]");
         print("test");
@@ -225,7 +229,7 @@ public class sftp : MonoBehaviour
             ssh.Connect();
             print("test");
             //var cmd = ssh.CreateCommand("echo -e \'" + passw + "\n\' | java -jar /var/www/html/ProcesareImagine7.jar \"" + stocare.ToString() + "\" \"" + prelucrare.ToString() + "\" \"" + destination + "\" \"121\" \"v\" 2>&1");
-            var cmd = ssh.CreateCommand("echo -e \'" + passw + "\n\' | java -jar /var/www/NeuralNetwork/MainJar.jar " + "\"" + stocare.ToString() + "\" \"" + destination + "\" \"v\"");
+            var cmd = ssh.CreateCommand("echo -e \'" + passw + "\n\' | java -jar "+camerascript.locatiefolder + "MainJar.jar " + "\"" + stocare.ToString() + "\" \"" + destination + "\" \"v\"");
             var result = cmd.Execute();
 
             var reader = new StreamReader(cmd.ExtendedOutputStream);
@@ -263,6 +267,7 @@ public class sftp : MonoBehaviour
 
     public void download() // neoptimizat pentru telefon, da crash
     {
+        Debug.Log("aici incepe download-ul");
         try
         {
             using (SftpClient sftp = new SftpClient(camerascript.serverip, 22, "root", pass))
